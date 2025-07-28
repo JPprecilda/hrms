@@ -109,7 +109,7 @@ export default function Layout({ children }) {
                             </ListItemButton>
                         </Dropdown.Trigger>
 
-                        <Dropdown.Content className="bg-white border border-gray-200 rounded-md shadow-md">
+                        <Dropdown.Content className="w-full bg-white border border-gray-200 rounded-md shadow-md">
                             <Dropdown.Link
                                 href={route("profile.edit")}
                                 className="text-gray-700 hover:bg-gray-100"

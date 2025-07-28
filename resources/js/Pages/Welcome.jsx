@@ -1,114 +1,98 @@
+import React from "react";
+import { Head, Link } from "@inertiajs/react";
 import {
-    Avatar,
+    Container,
     Box,
-    Paper,
-    TextField,
     Typography,
     Button,
+    Paper,
+    Avatar,
     Stack,
+    useMediaQuery,
+    useTheme,
 } from "@mui/material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Head, useForm } from "@inertiajs/react";
 
-export default function Login({ status }) {
-    const { data, setData, post, processing, errors } = useForm({
-        email: "",
-        password: "",
-    });
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        post(route("login"));
-    };
+export default function Welcome() {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
     return (
-        <>
-            <Head title="Login" />
-
+        <Container maxWidth="sm">
+            <Head title="Welcome" />
             <Box
                 sx={{
                     minHeight: "100vh",
                     display: "flex",
-                    justifyContent: "center",
                     alignItems: "center",
+                    justifyContent: "center",
+                    bgcolor: "white",
                     px: 2,
-                    backgroundColor: "#f4f6f8",
                 }}
             >
                 <Paper
-                    elevation={4}
+                    elevation={3}
                     sx={{
+                        p: isMobile ? 3 : 5,
+                        textAlign: "center",
                         width: "100%",
-                        maxWidth: 400,
-                        p: { xs: 3, sm: 4 },
                         borderRadius: 3,
-                        backgroundColor: "white",
                     }}
                 >
-                    <Box textAlign="center" mb={3}>
-                        <Avatar
-                            sx={{
-                                m: "auto",
-                                bgcolor: "primary.main",
-                                width: 56,
-                                height: 56,
-                            }}
-                        >
-                            <LockOutlinedIcon />
-                        </Avatar>
-                        <Typography variant="h5" mt={1}>
-                            Sign in
+                    {/* Logo */}
+                    <Avatar
+                        src="/Images/baybay-logo.png"
+                        alt="HRMS Logo"
+                        sx={{
+                            width: isMobile ? 64 : 80,
+                            height: isMobile ? 64 : 80,
+                            mx: "auto",
+                            mb: 2,
+                        }}
+                    />
+
+                    {/* Title & Subtitle */}
+                    <Typography
+                        variant={isMobile ? "h5" : "h4"}
+                        gutterBottom
+                        fontWeight="bold"
+                    >
+                        Welcome to HRMS
+                    </Typography>
+                    <Typography
+                        variant="body1"
+                        color="text.secondary"
+                        mb={3}
+                        sx={{ fontSize: isMobile ? "0.9rem" : "1rem" }}
+                    >
+                        Human Resource Management System
+                    </Typography>
+
+                    {/* Key Features */}
+                    <Stack
+                        direction="row"
+                        spacing={2}
+                        justifyContent="center"
+                        flexWrap="wrap"
+                        mb={3}
+                    >
+                        <Typography variant="body2" color="text.secondary">
+                            ✔ Employee Records
                         </Typography>
-                        {status && (
-                            <Typography
-                                variant="body2"
-                                color="success.main"
-                                mt={2}
-                            >
-                                {status}
-                            </Typography>
-                        )}
-                    </Box>
+                    </Stack>
 
-                    <Box component="form" onSubmit={handleSubmit} noValidate>
-                        <Stack spacing={2}>
-                            <TextField
-                                fullWidth
-                                label="Email"
-                                name="email"
-                                value={data.email}
-                                onChange={(e) =>
-                                    setData("email", e.target.value)
-                                }
-                                error={!!errors.email}
-                                helperText={errors.email}
-                            />
-
-                            <TextField
-                                fullWidth
-                                label="Password"
-                                name="password"
-                                type="password"
-                                value={data.password}
-                                onChange={(e) =>
-                                    setData("password", e.target.value)
-                                }
-                                error={!!errors.password}
-                                helperText={errors.password}
-                            />
-
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                disabled={processing}
-                            >
-                                Log in
-                            </Button>
-                        </Stack>
-                    </Box>
+                    {/* Login Button */}
+                    <Button
+                        component={Link}
+                        href="/login"
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        fullWidth={isMobile}
+                    >
+                        Go to Login
+                    </Button>
                 </Paper>
             </Box>
-        </>
+        </Container>
     );
 }

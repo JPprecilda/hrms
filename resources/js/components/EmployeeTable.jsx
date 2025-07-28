@@ -86,7 +86,7 @@ const EmployeeTable = ({ employees, searchTerm, department }) => {
               <TableRow key={employee.id}>
                 <TableCell>{employee.name}</TableCell>
                 <TableCell>{employee.department.department_name.split('-')[0].trim()}</TableCell>
-                <TableCell>{employee.plantilla}</TableCell>
+                <TableCell>{employee.plantilla_position}</TableCell>
                 <TableCell>
                   <Button component={Link} href={route('employees.show', employee.id)} variant='contained' color='success'>View</Button>
                   <Button component={Link} href={`/employees/${employee.id}/edit`} variant="contained" color="primary" sx={{ ml: 2 }}>Edit</Button>
