@@ -5,7 +5,7 @@ const EmployeeShowLayout = ({ title = "Employee Page", children }) => {
     return (
         <>
             <Head title={title} />
-            <Box sx={{ p: 3 }}>{children}</Box>
+            {children}
         </>
     );
 };

@@ -8,6 +8,7 @@ import { EmploymentContent } from "@/components/TabPanelContent/EmploymentConten
 import { EducationEligibility } from "@/components/TabPanelContent/EducationEligibility";
 import { IDBenefits } from "@/components/TabPanelContent/IDBenefits";
 import InterviewRemarks from "@/components/Field/InterviewRemarks";
+import { Person, Work, School, Badge } from "@mui/icons-material"; // ✅ Import icons
 
 export const TabsCard = ({ data }) => {
     const [tabIndex, setTabIndex] = useState(0);
@@ -37,17 +38,51 @@ export const TabsCard = ({ data }) => {
                     onChange={handleChange}
                     variant="scrollable"
                     scrollButtons="auto"
+                    centered={false}
+                    sx={{
+                        width: {
+                            xs: "100%", // Match full width of card on mobile
+                            sm: "60%",
+                            md: "68%",
+                        },
+                        maxWidth: "100%",
+                        minHeight: {
+                            xs: 36, // Slightly taller than previous to balance
+                            sm: 48,
+                        },
+                        mx: "auto",
+                        "& .MuiTab-root": {
+                            minHeight: {
+                                xs: 36,
+                                sm: 48,
+                            },
+                            minWidth: {
+                                xs: 60,
+                                sm: 72,
+                            },
+                            padding: {
+                                xs: "4px 8px",
+                                sm: "6px 12px",
+                            },
+                        },
+                        "& .MuiSvgIcon-root": {
+                            fontSize: {
+                                xs: "1.125rem",
+                                sm: "1.5rem",
+                            },
+                        },
+                    }}
                 >
-                    <Tab label="Personal" />
-                    <Tab label="Employment" />
-                    <Tab label="Education & Eligibility" />
-                    <Tab label="IDs & Benefits" />
+                    <Tab icon={<Person />} />
+                    <Tab icon={<Work />} />
+                    <Tab icon={<School />} />
+                    <Tab icon={<Badge />} />
                 </Tabs>
 
                 <Box
                     sx={{
-                        height: "100%", // take remaining height
-                        overflowY: "auto", // enable scrolling inside tab
+                        height: "100%",
+                        overflowY: "auto",
                         flexGrow: 1,
                         mt: 2,
                     }}
@@ -66,7 +101,8 @@ export const TabsCard = ({ data }) => {
                     </TabPanel>
                 </Box>
             </CardContent>
-            <Box sx={{p:2 }}>
+
+            <Box sx={{ p: 2 }}>
                 <InterviewRemarks employee={data} />
             </Box>
         </Card>

@@ -16,9 +16,9 @@ const index = ({ employees, filters }) => {
   return (
     <Layout>
       <Typography variant="h4" gutterBottom>Employee Dashboard</Typography>
-      <Button component={Link} href="/employees/create" variant="contained" color="primary" sx={{ mb: 2 }}>
+      {/* <Button component={Link} href="/employees/create" variant="contained" color="primary" sx={{ mb: 2 }}>
         Add Employee
-      </Button>
+      </Button> */}
       {/* <Box>
         <form onSubmit={submit}>
             <TextField

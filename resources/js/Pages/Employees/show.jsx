@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { usePage } from "@inertiajs/react";
 import EmployeeShowLayout from "@/components/EmployeeShowLayout";
 import Layout from "@/Layout/Layout";
@@ -13,7 +13,6 @@ const show = () => {
             <EmployeeShowLayout title="Employee Details">
                 <Stack
                     direction="row"
-                    spacing={2}
                     flexWrap="wrap"
                     justifyContent="center" // Centers on small screens
                 >

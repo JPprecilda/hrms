@@ -3,11 +3,19 @@ import { LabelValue } from "@/components/LabelValue";
 
 export const PersonalContent = ({ employee }) => {
     return (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 1 }}>
             <Typography
                 variant="h6"
                 gutterBottom
-                sx={{ fontWeight: "bold", color: "primary.main" }}
+                sx={{
+                    fontWeight: "bold",
+                    color: "primary.main",
+                    fontSize: {
+                        xs: "1rem", // Mobile
+                        sm: "1.125rem", // Tablets
+                        md: "1.25rem", // Desktop (optional)
+                    },
+                }}
             >
                 Personal Information
             </Typography>

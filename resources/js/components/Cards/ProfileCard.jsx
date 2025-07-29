@@ -4,6 +4,8 @@ import { SocialIconButton } from "@/components/SocialIconButton";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import { LabelValue } from "@/components/LabelValue";
+import { DataArrayTwoTone } from "@mui/icons-material";
 
 export const ProfileCard = ({ data }) => {
     return (
@@ -29,49 +31,46 @@ export const ProfileCard = ({ data }) => {
                         src={
                             data.picture
                                 ? `/${data.picture}`
-                                : "Images/baybay-logo.png"
+                                : "/Images/baybay-logo.png"
                         }
                         sx={{
                             width: "100%",
                             height: "auto",
                             maxWidth: 250,
                         }}
+                        onError={(e) =>
+                            (e.target.src = "/Images/baybay-logo.png")
+                        }
                     />
                     <Typography variant="h5">{data.name}</Typography>
                     <Box sx={{ maxWidth: "300px" }}>
-                        <Typography variant="body1" noWrap>
-                            {data.employment_number}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            Employee Number
-                        </Typography>
+                        <LabelValue
+                            label="Employee Number"
+                            value={data.employment_number}
+                        />
                     </Box>
                     <Box sx={{ maxWidth: "300px" }}>
-                        <Typography variant="body1" noWrap>
-                            {data.department?.department_name?.split(
-                                "-"
-                            )[1] || data.department?.department_name}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            Department
-                        </Typography>
+                        <LabelValue
+                            label="Department"
+                            value={
+                                data.department?.department_name?.split(
+                                    "-"
+                                )[1] || data.department?.department_name
+                            }
+                        />
                     </Box>
                     <Box sx={{ maxWidth: "300px" }}>
-                        <Typography variant="body1" noWrap>
-                            {data.email}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            Email
-                        </Typography>
+                        <LabelValue
+                            label="Email"
+                            value={data.email}
+                        />
                     </Box>
 
                     <Box sx={{ maxWidth: "200px" }}>
-                        <Typography variant="body1" noWrap>
-                            {data.contact_number}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            Contact Number
-                        </Typography>
+                        <LabelValue
+                            label="Contact Number"
+                            value={data.contact_number}
+                        />
                     </Box>
 
                     <Box sx={{ display: "flex", gap: 2 }}>
