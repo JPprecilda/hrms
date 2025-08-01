@@ -13,6 +13,11 @@ import {
     Stack,
     IconButton,
     useMediaQuery,
+    Card,
+    CardContent,
+    Typography,
+    Divider,
+    Box,
 } from "@mui/material";
 import { Head, Link, router } from "@inertiajs/react";
 import { Visibility, Edit, Delete } from "@mui/icons-material";
@@ -21,7 +26,6 @@ const EmployeeTable = ({ employees, searchTerm }) => {
     const [search, setSearch] = useState(searchTerm || "");
     const isMobile = useMediaQuery("(max-width:600px)");
 
-    // Debounce search input
     useEffect(() => {
         const debounce = setTimeout(() => {
             router.get(
@@ -33,7 +37,6 @@ const EmployeeTable = ({ employees, searchTerm }) => {
         return () => clearTimeout(debounce);
     }, [search]);
 
-    // Handle search form submission
     const handleSearchSubmit = (e) => {
         e.preventDefault();
         router.get(
@@ -43,7 +46,6 @@ const EmployeeTable = ({ employees, searchTerm }) => {
         );
     };
 
-    // Pagination controls
     const handlePageChange = (event, newPage) => {
         router.get(
             "/employees",
@@ -80,185 +82,211 @@ const EmployeeTable = ({ employees, searchTerm }) => {
     return (
         <>
             <Head title="Employees" />
-
-            {/* Search bar */}
-            <form onSubmit={handleSearchSubmit}>
-                <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
-                    <TextField
-                        label="Search"
-                        variant="outlined"
-                        fullWidth
-                        size="small"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
-                    <Button type="submit" variant="contained">
-                        Search
+            <Paper
+                elevation={3}
+                sx={{
+                    p: 2,
+                    mb: 2,
+                    position: "sticky",
+                    top: 0,
+                    zIndex: 100,
+                    backgroundColor: "#fff",
+                }}
+            >
+                <Stack
+                    direction={{ xs: "column", sm: "row" }}
+                    spacing={2}
+                    justifyContent="space-between"
+                    alignItems="center"
+                    mb={2}
+                >
+                    <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                        Employee List
+                    </Typography>
+                    <Button
+                        component={Link}
+                        href={route("employees.create")}
+                        variant="contained"
+                        color="primary"
+                    >
+                        Add New Employee
                     </Button>
                 </Stack>
-            </form>
 
-            {/* Table */}
-            <TableContainer component={Paper}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Name</TableCell>
-                            <TableCell>Department</TableCell>
-                            {!isMobile && <TableCell>Plantilla</TableCell>}
-                            <TableCell>Actions</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {paginatedEmployees.length === 0 ? (
-                            <TableRow
-                                sx={{
-                                    height: {
-                                        xs: 40, // mobile row height
-                                        md: 56, // desktop row height (adjust here)
-                                    },
-                                    py: {
-                                        xs: 0.5,
-                                        md: 1.5, // vertical padding
-                                    },
-                                }}
-                            >
-                                <TableCell colSpan={4} align="center">
-                                    No employees found.
-                                </TableCell>
+                <form onSubmit={handleSearchSubmit}>
+                    <Stack direction="row" spacing={2}>
+                        <TextField
+                            label="Search"
+                            variant="outlined"
+                            fullWidth
+                            size="small"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                        <Button type="submit" variant="contained">
+                            Search
+                        </Button>
+                    </Stack>
+                </form>
+            </Paper>
+
+            {!isMobile ? (
+                <TableContainer component={Paper} elevation={2}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Name</TableCell>
+                                <TableCell>Department</TableCell>
+                                <TableCell>Plantilla</TableCell>
+                                <TableCell align="right">Actions</TableCell>
                             </TableRow>
-                        ) : (
-                            paginatedEmployees.map((employee) => (
-                                <TableRow key={employee.id}>
-                                    <TableCell>{employee.name}</TableCell>
-                                    <TableCell>
-                                        {employee.department?.department_name
-                                            ?.split("-")[0]
-                                            .trim()}
+                        </TableHead>
+                        <TableBody>
+                            {paginatedEmployees.length === 0 ? (
+                                <TableRow>
+                                    <TableCell colSpan={4} align="center">
+                                        No employees found.
                                     </TableCell>
-                                    {!isMobile && (
+                                </TableRow>
+                            ) : (
+                                paginatedEmployees.map((employee) => (
+                                    <TableRow key={employee.id}>
+                                        <TableCell>{employee.name}</TableCell>
+                                        <TableCell>
+                                            {employee.department?.department_name
+                                                ?.split("-")[0]
+                                                .trim()}
+                                        </TableCell>
                                         <TableCell>
                                             {employee.plantilla_position}
                                         </TableCell>
-                                    )}
-                                    <TableCell>
-                                        {isMobile ? (
-                                            <>
-                                                <IconButton
-                                                    component={Link}
-                                                    href={route(
-                                                        "employees.show",
-                                                        employee.id
-                                                    )}
-                                                    color="success"
-                                                >
-                                                    <Visibility fontSize="small" />
-                                                </IconButton>
-                                                <IconButton
-                                                    component={Link}
-                                                    href={route(
-                                                        "employees.edit",
-                                                        employee.id
-                                                    )}
-                                                    color="primary"
-                                                >
-                                                    <Edit fontSize="small" />
-                                                </IconButton>
-                                                <IconButton
-                                                    onClick={() =>
-                                                        handleDelete(
-                                                            employee.id
-                                                        )
-                                                    }
-                                                    color="error"
-                                                >
-                                                    <Delete fontSize="small" />
-                                                </IconButton>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Button
-                                                    component={Link}
-                                                    href={route(
-                                                        "employees.show",
-                                                        employee.id
-                                                    )}
-                                                    variant="contained"
-                                                    color="success"
-                                                    size="small"
-                                                >
-                                                    View
-                                                </Button>
-                                                {/* <Button
-                                                    component={Link}
-                                                    href={route(
-                                                        "employees.edit",
-                                                        employee.id
-                                                    )}
-                                                    variant="contained"
-                                                    color="primary"
-                                                    size="small"
-                                                    sx={{ ml: 1 }}
-                                                >
-                                                    Edit
-                                                </Button> */}
-                                                {/* <Button
-                                                    onClick={() =>
-                                                        handleDelete(
-                                                            employee.id
-                                                        )
-                                                    }
-                                                    variant="contained"
-                                                    color="error"
-                                                    size="small"
-                                                    sx={{ ml: 1 }}
-                                                >
-                                                    Delete
-                                                </Button> */}
-                                            </>
-                                        )}
-                                    </TableCell>
-                                </TableRow>
-                            ))
-                        )}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                                        <TableCell align="right">
+                                            <IconButton
+                                                component={Link}
+                                                href={route(
+                                                    "employees.show",
+                                                    employee.id
+                                                )}
+                                                color="success"
+                                            >
+                                                <Visibility />
+                                            </IconButton>
+                                            <IconButton
+                                                component={Link}
+                                                href={route(
+                                                    "employees.edit",
+                                                    employee.id
+                                                )}
+                                                color="primary"
+                                            >
+                                                <Edit />
+                                            </IconButton>
+                                            <IconButton
+                                                onClick={() =>
+                                                    handleDelete(employee.id)
+                                                }
+                                                color="error"
+                                            >
+                                                <Delete />
+                                            </IconButton>
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            )}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            ) : (
+                <Stack spacing={2}>
+                    {paginatedEmployees.length === 0 ? (
+                        <Typography align="center">
+                            No employees found.
+                        </Typography>
+                    ) : (
+                        paginatedEmployees.map((employee) => (
+                            <Card key={employee.id} variant="outlined">
+                                <CardContent>
+                                    <Typography variant="h6">
+                                        {employee.name}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        Department:{" "}
+                                        {employee.department?.department_name
+                                            ?.split("-")[0]
+                                            .trim()}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        Plantilla: {employee.plantilla_position || "—"}
+                                    </Typography>
 
-            {/* Pagination */}
-            <TablePagination
-                component="div"
-                count={employees.total}
-                page={employees.current_page - 1}
-                onPageChange={handlePageChange}
-                rowsPerPage={employees.per_page}
-                onRowsPerPageChange={handleRowsPerPageChange}
-                rowsPerPageOptions={[10, 20, 50, 100]}
+                                    <Divider sx={{ my: 1 }} />
+
+                                    <Stack direction="row" spacing={1}>
+                                        <IconButton
+                                            component={Link}
+                                            href={route(
+                                                "employees.show",
+                                                employee.id
+                                            )}
+                                            color="success"
+                                        >
+                                            <Visibility fontSize="small" />
+                                        </IconButton>
+                                        <IconButton
+                                            component={Link}
+                                            href={route(
+                                                "employees.edit",
+                                                employee.id
+                                            )}
+                                            color="primary"
+                                        >
+                                            <Edit fontSize="small" />
+                                        </IconButton>
+                                        <IconButton
+                                            onClick={() =>
+                                                handleDelete(employee.id)
+                                            }
+                                            color="error"
+                                        >
+                                            <Delete fontSize="small" />
+                                        </IconButton>
+                                    </Stack>
+                                </CardContent>
+                            </Card>
+                        ))
+                    )}
+                </Stack>
+            )}
+
+            <Paper
+                elevation={3}
                 sx={{
-                    fontSize: {
-                        xs: "0.75rem", // smaller font on mobile
-                        sm: "0.875rem", // normal on small screens
-                        md: "1rem", // standard on medium screens
-                    },
-                    "& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows":
-                        {
-                            fontSize: {
-                                xs: "0.75rem",
-                                sm: "0.875rem",
-                                md: "1rem",
-                            },
-                        },
-                    "& .MuiTablePagination-actions": {
-                        "& button": {
-                            fontSize: {
-                                xs: "0.75rem",
-                                sm: "0.875rem",
-                                md: "1rem",
-                            },
-                        },
-                    },
+                    mt: 3,
+                    p: 1,
+                    backgroundColor: "#fff",
+                    position: "sticky",
+                    bottom: 0,
                 }}
-            />
+            >
+                <TablePagination
+                    component="div"
+                    count={employees.total}
+                    page={employees.current_page - 1}
+                    onPageChange={handlePageChange}
+                    rowsPerPage={employees.per_page}
+                    onRowsPerPageChange={handleRowsPerPageChange}
+                    rowsPerPageOptions={[10, 20, 50, 100]}
+                    sx={{
+                        "& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows":
+                            {
+                                fontSize: "0.875rem",
+                            },
+                        "& .MuiTablePagination-actions button": {
+                            fontSize: "0.875rem",
+                        },
+                    }}
+                />
+            </Paper>
         </>
     );
 };

@@ -1,13 +1,9 @@
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
+  Box,
   Paper,
   Typography,
-  Box,
+  Divider,
+  Chip,
 } from "@mui/material";
 import { usePage } from "@inertiajs/react";
 
@@ -18,51 +14,55 @@ export const DashboardDepartmentTable = () => {
     <Paper
       elevation={3}
       sx={{
-        width: "100%",          // Half screen width
+        width: "100%",
         maxHeight: 400,
-        overflow: "auto",
+        overflowY: "auto",
+        p: 2,
         display: "flex",
         flexDirection: "column",
+        gap: 1,
       }}
     >
-      {/* Sticky Title */}
+      {/* Sticky Header */}
       <Box
         sx={{
           position: "sticky",
           top: 0,
-          backgroundColor: "#fff",
+          backgroundColor: "white",
           zIndex: 2,
-          borderBottom: "1px solid #ddd",
-          p: 2,
+          pb: 1,
         }}
       >
         <Typography variant="h6" fontWeight="bold">
           Employees per Department
         </Typography>
+        <Divider />
       </Box>
 
-      <TableContainer>
-        <Table stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell sx={{ fontWeight: "bold", backgroundColor: "#f5f5f5" }}>
-                Department Name
-              </TableCell>
-              <TableCell sx={{ fontWeight: "bold", backgroundColor: "#f5f5f5" }}>
-                Number of Employees
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {stats.employeesPerDepartment.map((dept, index) => (
-              <TableRow key={index}>
-                <TableCell>{dept.department}</TableCell>
-                <TableCell>{dept.count}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {/* List-like layout */}
+      {stats.employeesPerDepartment.map((dept, index) => (
+        <Box
+          key={index}
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            py: 1,
+            px: 1,
+            borderRadius: 1,
+            backgroundColor: index % 2 === 0 ? "#f5f5f5" : "#fff",
+            boxShadow: 1,
+          }}
+        >
+          <Typography fontSize="1rem">{dept.department}</Typography>
+          <Chip
+            label={dept.count}
+            color="primary"
+            size="small"
+            sx={{ fontWeight: "bold" }}
+          />
+        </Box>
+      ))}
     </Paper>
   );
 };

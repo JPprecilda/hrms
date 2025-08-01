@@ -8,7 +8,10 @@ import { EmploymentContent } from "@/components/TabPanelContent/EmploymentConten
 import { EducationEligibility } from "@/components/TabPanelContent/EducationEligibility";
 import { IDBenefits } from "@/components/TabPanelContent/IDBenefits";
 import InterviewRemarks from "@/components/Field/InterviewRemarks";
-import { Person, Work, School, Badge } from "@mui/icons-material"; // ✅ Import icons
+import PersonIcon from "@mui/icons-material/Person";
+import WorkIcon from "@mui/icons-material/Work";
+import SchoolIcon from "@mui/icons-material/School";
+import BadgeIcon from "@mui/icons-material/Badge";
 
 export const TabsCard = ({ data }) => {
     const [tabIndex, setTabIndex] = useState(0);
@@ -23,13 +26,15 @@ export const TabsCard = ({ data }) => {
                 flexGrow: 1,
                 flexBasis: {
                     xs: "100%",
-                    sm: "60%",
+                    sm: "65%",
                     md: "68%",
                 },
                 minWidth: 300,
                 display: "flex",
                 flexDirection: "column",
-                height: 600,
+                backgroundColor: "#f4f6f8", // Same light background as ProfileCard
+                borderRadius: 4,
+                boxShadow: 3,
             }}
         >
             <CardContent sx={{ flexGrow: 1 }}>
@@ -38,45 +43,13 @@ export const TabsCard = ({ data }) => {
                     onChange={handleChange}
                     variant="scrollable"
                     scrollButtons="auto"
-                    centered={false}
-                    sx={{
-                        width: {
-                            xs: "100%", // Match full width of card on mobile
-                            sm: "60%",
-                            md: "68%",
-                        },
-                        maxWidth: "100%",
-                        minHeight: {
-                            xs: 36, // Slightly taller than previous to balance
-                            sm: 48,
-                        },
-                        mx: "auto",
-                        "& .MuiTab-root": {
-                            minHeight: {
-                                xs: 36,
-                                sm: 48,
-                            },
-                            minWidth: {
-                                xs: 60,
-                                sm: 72,
-                            },
-                            padding: {
-                                xs: "4px 8px",
-                                sm: "6px 12px",
-                            },
-                        },
-                        "& .MuiSvgIcon-root": {
-                            fontSize: {
-                                xs: "1.125rem",
-                                sm: "1.5rem",
-                            },
-                        },
-                    }}
+                    textColor="primary"
+                    indicatorColor="primary"
                 >
-                    <Tab icon={<Person />} />
-                    <Tab icon={<Work />} />
-                    <Tab icon={<School />} />
-                    <Tab icon={<Badge />} />
+                    <Tab label="Personal" />
+                    <Tab label="Employment" />
+                    <Tab label="Education & Eligibility" />
+                    <Tab label="IDs & Benefits" />
                 </Tabs>
 
                 <Box
@@ -102,7 +75,16 @@ export const TabsCard = ({ data }) => {
                 </Box>
             </CardContent>
 
-            <Box sx={{ p: 2 }}>
+            {/* Remarks Section */}
+            <Box
+                sx={{
+                    p: 2,
+                    borderTop: "1px solid #ddd",
+                    backgroundColor: "#eef1f5", // Slight visual separation
+                    borderBottomLeftRadius: 16,
+                    borderBottomRightRadius: 16,
+                }}
+            >
                 <InterviewRemarks employee={data} />
             </Box>
         </Card>

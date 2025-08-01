@@ -11,15 +11,22 @@ const show = () => {
     return (
         <Layout>
             <EmployeeShowLayout title="Employee Details">
-                <Stack
+                {/* <Stack
                     direction="row"
                     flexWrap="wrap"
                     justifyContent="center" // Centers on small screens
                 >
-                    {/* Profile Card */}
                     <ProfileCard data={employee} />
 
-                    {/* Tabs Card */}
+
+                    <TabsCard data={employee} />
+                </Stack> */}
+                <Stack
+                    direction={{ xs: "column", md: "row" }}
+                    spacing={2}
+                    justifyContent="center"
+                >
+                    <ProfileCard data={employee} />
                     <TabsCard data={employee} />
                 </Stack>
             </EmployeeShowLayout>

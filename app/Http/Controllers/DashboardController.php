@@ -56,6 +56,9 @@ class DashboardController extends Controller
                 'spCount' => Employee::where('employment_type', 'Service Provider')->count(),
                 'specialJOCount' => Employee::where('employment_type', 'Special Job Order')->count(),
                 'joCount' => Employee::where('employment_type', 'Job Order')->count(),
+                'coterminusCount' => Employee::where('employment_type', 'Co-terminus')->count(),
+                'combinedJOCount' => Employee::whereIn('employment_type', ['Special Job Order', 'Job Order'])->count(),
+                
 
 
                 // Demographics and basic info

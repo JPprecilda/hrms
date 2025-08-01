@@ -1,16 +1,17 @@
 import {
   Box,
+  CssBaseline,
   Drawer,
   Toolbar,
   List,
-  ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  CssBaseline,
   BottomNavigation,
   BottomNavigationAction,
   useMediaQuery,
+  Divider,
+  Paper,
 } from "@mui/material";
 import { useState } from "react";
 import { Link, usePage } from "@inertiajs/react";
@@ -25,22 +26,18 @@ const drawerWidth = 240;
 const navLinks = [
   { text: "Dashboard", href: "/dashboard", icon: <DashboardIcon /> },
   { text: "Employees", href: "/employees", icon: <PeopleIcon /> },
-  { text: "Settings", href: "/profile", icon: <SettingsIcon />, menu: true },
 ];
 
 export default function Layout({ children }) {
   const { url } = usePage();
   const isMobile = useMediaQuery("(max-width:600px)");
-  const [open, setOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [bottomNavValue, setBottomNavValue] = useState(url);
-
-  const handleToggle = () => setOpen(!open);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <CssBaseline />
 
-      {/* Sidebar Drawer for Desktop */}
       {!isMobile && (
         <Drawer
           variant="permanent"
@@ -50,33 +47,53 @@ export default function Layout({ children }) {
             "& .MuiDrawer-paper": {
               width: drawerWidth,
               boxSizing: "border-box",
+              bgcolor: "#ffffff",
+              borderRight: "none",
+              boxShadow: "3px 0 10px rgba(0,0,0,0.1)",
             },
           }}
         >
-          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", py: 2 }}>
-            <img src="/Images/baybay-logo.png" alt="Logo" width={80} />
-          </Box>
-          <Toolbar />
+          <Toolbar sx={{ justifyContent: "center", py: 2 }}>
+            <img src="/Images/baybay-logo.png" alt="Logo" width={60} />
+          </Toolbar>
+          <Divider />
           <List>
-            {navLinks.filter(i => !i.menu).map(item => (
-              <ListItem key={item.text} disablePadding selected={url === item.href}>
-                <ListItemButton component={Link} href={item.href}>
-                  <ListItemIcon>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.text} />
-                </ListItemButton>
-              </ListItem>
+            {navLinks.map((item) => (
+              <ListItemButton
+                key={item.text}
+                component={Link}
+                href={item.href}
+                selected={url.startsWith(item.href)}
+                sx={{
+                  borderRadius: 2,
+                  mx: 1,
+                  mb: 1,
+                  transition: "0.3s",
+                  "&.Mui-selected": {
+                    bgcolor: "primary.light",
+                    color: "white",
+                    "&:hover": { bgcolor: "primary.main" },
+                  },
+                }}
+              >
+                <ListItemIcon sx={{ color: "inherit" }}>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.text} />
+              </ListItemButton>
             ))}
 
-            {/* Dropdown for Settings */}
             <Dropdown>
               <Dropdown.Trigger>
-                <ListItemButton onClick={handleToggle}>
+                <ListItemButton
+                  onClick={() => setSettingsOpen(!settingsOpen)}
+                  sx={{ borderRadius: 2, mx: 1 }}
+                >
                   <ListItemIcon><SettingsIcon /></ListItemIcon>
                   <ListItemText primary="Settings" />
                   <KeyboardArrowDownIcon
                     sx={{
                       transition: "transform 0.3s ease",
-                      transform: open ? "rotate(180deg)" : "rotate(0deg)",
+                      transform: settingsOpen ? "rotate(180deg)" : "rotate(0deg)",
+                      ml: "auto",
                     }}
                   />
                 </ListItemButton>
@@ -99,20 +116,31 @@ export default function Layout({ children }) {
         </Drawer>
       )}
 
-      {/* Main Content */}
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
-          ml: !isMobile ? `${drawerWidth}px` : 0,
+          px: 3,
+          pt: 3,
           pb: isMobile ? 7 : 3,
+          ml: !isMobile ? `${drawerWidth}px` : 0,
+          bgcolor: "#f5f7fa",
         }}
       >
-        {children}
+        <Paper
+          elevation={3}
+          sx={{
+            p: 3,
+            borderRadius: 3,
+            bgcolor: "white",
+            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.05)",
+            minHeight: "calc(100vh - 100px)",
+          }}
+        >
+          {children}
+        </Paper>
       </Box>
 
-      {/* Bottom Navigation for Mobile */}
       {isMobile && (
         <BottomNavigation
           showLabels={false}
@@ -125,9 +153,11 @@ export default function Layout({ children }) {
             right: 0,
             borderTop: "1px solid #ccc",
             zIndex: 1300,
+            bgcolor: "#fff",
+            boxShadow: "0 -2px 8px rgba(0, 0, 0, 0.1)",
           }}
         >
-          {navLinks.map(item => (
+          {[...navLinks, { text: "Settings", href: "#", icon: <SettingsIcon /> }].map((item) => (
             <BottomNavigationAction
               key={item.text}
               label={item.text}
